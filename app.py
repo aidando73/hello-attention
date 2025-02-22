@@ -46,7 +46,7 @@ embeddings_with_pe = embeddings + positional_encoding
 print("embeddings_with_pe: ", embeddings_with_pe)
 
 # Single-head attention
-head_dim = 5
+head_dim = 3
 
 W_q = nn.Linear(d_model, head_dim, bias=False)
 W_k = nn.Linear(d_model, head_dim, bias=False)
@@ -60,3 +60,14 @@ print("q: ", q)
 print("k: ", k)
 print("v: ", v)
 
+# Compute attention scores
+attn_scores = torch.matmul(q, k.transpose(-2, -1))
+print("attn_scores: ", attn_scores)
+
+# Apply softmax to get attention weights
+attn_weights = nn.functional.softmax(attn_scores, dim=-1)
+print("attn_weights: ", attn_weights)
+
+# Compute weighted sum of values
+attn_output = torch.matmul(attn_weights, v)
+print("attn_output: ", attn_output)
